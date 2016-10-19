@@ -1,0 +1,34 @@
+<h1>きつねさんBBS</h1>
+<h2><%= @bbs_thread.title %></h2>
+<% @bbs_responses.each do |r|%>
+  <p>名前：<%= r.name %></p>
+  <p>書き込み：<%= r.message %></p>
+  <p class="fav" style="cursor:pointer;color:orange;font-size:<%= r.fav_size + 8 %>px;" data-fav-response-id="<%= r.id %>">★</p>
+<% end %>
+<%= form_for @bbs_response, url: {action: "post"} do |f| %>
+  <%= f.text_field :name,placeholder: "ねこさん" %>
+  <%= f.text_area :message %>
+  <%= f.submit "レスを書き込む" %>
+<% end %>
+<script>
+  function favSizeUp(){
+    var responseId = this.getAttribute('data-fav-response-id');
+    var fav = this;
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        console.log(xhr.response);
+        fav.style.fontSize = '' + (xhr.response.favSize + 8) + 'px';
+      }
+    }
+    xhr.open('POST',location.href+'/'+responseId+'/fav');
+    xhr.responseType = 'json';
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+    xhr.send();
+  }
+  var favs = document.querySelectorAll('.fav');
+  for(var i=0;i<favs.length;i++){
+    favs[i].addEventListener('click',favSizeUp);
+  }
+</script>

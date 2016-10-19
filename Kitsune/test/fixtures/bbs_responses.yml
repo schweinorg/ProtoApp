@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bbs_thread: one
+  name: MyString
+  message: MyText
+  fav_size: 1
+
+two:
+  bbs_thread: two
+  name: MyString
+  message: MyText
+  fav_size: 1

@@ -1,0 +1,2 @@
+module BbsResponseHelper
+end
